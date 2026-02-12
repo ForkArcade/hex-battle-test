@@ -130,21 +130,18 @@
         var ch = typeDef ? typeDef.char : '?';
         var teamColor = u.team === 'player' ? colors.blueTeam : colors.redTeam;
         var lightColor = u.team === 'player' ? colors.blueLight : colors.redLight;
+        var spriteSize = size * 1.1;
 
         // Dim acted units
         if (u.acted) {
           FA.draw.withAlpha(0.4, function() {
             FA.draw.circle(px, py, size * 0.55, teamColor);
-            FA.draw.text(ch, px, py, {
-              color: '#fff', size: 16, bold: true, align: 'center', baseline: 'middle'
-            });
+            FA.draw.sprite('units', u.type, px - spriteSize / 2, py - spriteSize / 2, spriteSize, ch, '#fff');
           });
         } else {
           FA.draw.circle(px, py, size * 0.55, teamColor);
           FA.draw.circle(px, py, size * 0.55, null, lightColor, 2);
-          FA.draw.text(ch, px, py, {
-            color: '#fff', size: 16, bold: true, align: 'center', baseline: 'middle'
-          });
+          FA.draw.sprite('units', u.type, px - spriteSize / 2, py - spriteSize / 2, spriteSize, ch, '#fff');
         }
 
         // HP bar
