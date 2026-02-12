@@ -167,7 +167,7 @@
       if (!state.narrativeMessage || state.narrativeMessage.life <= 0) return;
 
       var msg = state.narrativeMessage;
-      var alpha = Math.min(1, msg.life);
+      var alpha = Math.min(1, msg.life / 1000);
       FA.draw.withAlpha(alpha, function() {
         FA.draw.rect(0, 0, cfg.canvasWidth, 30, 'rgba(0,0,0,0.7)');
         FA.draw.text(msg.text, cfg.canvasWidth / 2, 15, {

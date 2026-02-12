@@ -7,7 +7,7 @@
   function showNarrative(nodeId) {
     var textDef = FA.lookup('narrativeText', nodeId);
     if (textDef) {
-      FA.setState('narrativeMessage', { text: textDef.text, color: textDef.color, life: 3 });
+      FA.setState('narrativeMessage', { text: textDef.text, color: textDef.color, life: 4000 });
     }
     FA.narrative.transition(nodeId);
   }
