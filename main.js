@@ -12,25 +12,43 @@
   FA.bindKey('endTurn', ['e', 'Enter']);
   FA.bindKey('restart', ['r']);
   FA.bindKey('cancel',  ['Escape']);
+  FA.bindKey('start',   [' ']);
 
   // Input handling
   FA.on('input:action', function(data) {
     var state = FA.getState();
-    if (data.action === 'restart' && state.gameOver) { Battle.init(); return; }
-    if (state.gameOver) return;
-    if (data.action === 'endTurn') Battle.endPlayerPhase();
+
+    // Start screen
+    if (state.screen === 'start' && data.action === 'start') {
+      Battle.begin();
+      return;
+    }
+
+    // Game over screens
+    if ((state.screen === 'victory' || state.screen === 'defeat') && data.action === 'restart') {
+      Battle.startScreen();
+      return;
+    }
+
+    // Playing
+    if (state.screen !== 'playing') return;
+    if (state.phase === 'enemy') return;
+
+    if (data.action === 'endTurn') {
+      Battle.endPlayerPhase();
+    }
     if (data.action === 'cancel') {
-      state.selectedUnit = null;
-      state.phase = 'select';
-      state.reachable = [];
+      Battle.deselect();
     }
   });
 
   // Click on hex
   FA.on('input:click', function(data) {
     var state = FA.getState();
-    if (state.gameOver) return;
-    // TODO: convert click to hex coords, select/move/attack
+    if (state.screen !== 'playing') return;
+
+    var hex = GameMap.pixelToHex(data.x, data.y, cfg.hexSize, cfg.offsetX, cfg.offsetY);
+    Battle.handleClick(hex.col, hex.row);
   });
 
   // Score submission
@@ -44,6 +62,11 @@
   FA.setUpdate(function(dt) {
     FA.updateEffects(dt);
     FA.updateFloats(dt);
+    // Narrative message timer
+    var state = FA.getState();
+    if (state.narrativeMessage && state.narrativeMessage.life > 0) {
+      state.narrativeMessage.life -= dt;
+    }
   });
 
   FA.setRender(function() {
@@ -53,12 +76,11 @@
 
   // Start
   Render.setup();
-  Battle.init();
+  Battle.startScreen();
 
   if (typeof ForkArcade !== 'undefined') {
     ForkArcade.onReady(function() {});
   }
 
   FA.start();
-
 })();

@@ -1,4 +1,16 @@
 {
   "template": "strategy-rpg",
-  "gameFiles": ["data.js", "map.js", "battle.js", "render.js", "main.js"]
+  "gameFiles": [
+    "data.js",
+    "map.js",
+    "battle.js",
+    "render.js",
+    "main.js"
+  ],
+  "slug": "hex-battle-test",
+  "title": "Hex Battle Test",
+  "currentVersion": 0,
+  "versions": [],
+  "sdkVersion": 1,
+  "engineVersion": 1
 }
