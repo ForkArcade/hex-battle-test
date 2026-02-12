@@ -1,0 +1,4 @@
+{
+  "template": "strategy-rpg",
+  "gameFiles": ["data.js", "map.js", "battle.js", "render.js", "main.js"]
+}
