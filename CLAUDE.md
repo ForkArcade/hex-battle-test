@@ -1,37 +1,37 @@
 # Strategy RPG — ForkArcade
 
-Turowa strategia z jednostkami na siatce hex — combat, AI, progresja.
+Turn-based strategy with units on a hex grid — combat, AI, progression.
 
-## WYMAGANIA — ekrany i narracja
+## REQUIREMENTS — screens and narrative
 
-Każda gra MUSI mieć minimum 3 ekrany (stan `screen` w state):
+Every game MUST have at least 3 screens (`screen` state):
 
-1. **Ekran startowy** (`screen: 'start'`) — tytuł gry, krótki opis, sterowanie, prompt do rozpoczęcia (np. `[SPACJA]`)
-2. **Ekran gry** (`screen: 'playing'`) — właściwa rozgrywka
-3. **Ekran końcowy** (`screen: 'victory'` lub `screen: 'defeat'`) — tekst narracyjny, statystyki, wynik, prompt do restartu (np. `[R]`)
+1. **Start screen** (`screen: 'start'`) — game title, short description, controls, prompt to begin (e.g. `[SPACE]`)
+2. **Game screen** (`screen: 'playing'`) — actual gameplay
+3. **End screen** (`screen: 'victory'` or `screen: 'defeat'`) — narrative text, stats, score, prompt to restart (e.g. `[R]`)
 
-Narracja MUSI być widoczna w grze:
+Narrative MUST be visible in the game:
 
-- Zarejestruj teksty narracyjne: `FA.register('narrativeText', nodeId, { text, color })`
-- Wyświetlaj je w grze (np. pasek u góry ekranu z fade out, linia w logu wiadomości)
-- Wywołuj `showNarrative(nodeId)` przy kluczowych momentach (początek bitwy, pierwsza śmierć, zmiana fazy, zwycięstwo, porażka)
-- Ekran końcowy pokazuje odpowiedni tekst narracyjny
-- Narracja to nie tylko dane do platformy — gracz MUSI ją widzieć
+- Register narrative texts: `FA.register('narrativeText', nodeId, { text, color })`
+- Display them in the game (e.g. bar at the top of the screen with fade out, line in the message log)
+- Call `showNarrative(nodeId)` at key moments (battle start, first kill, phase change, victory, defeat)
+- End screen shows appropriate narrative text
+- Narrative is not just data for the platform — the player MUST see it
 
-## Struktura plików
+## File structure
 
-| Plik | Opis |
-|------|------|
-| `data.js` | Rejestracja danych: `FA.register('unitTypes', ...)`, `FA.register('terrain', ...)`, config, abilities, narrative |
-| `map.js` | Siatka hex: math (hex↔pixel, distance, neighbors), generacja mapy, pathfinding |
-| `battle.js` | Logika bitwy: system tur, combat, AI wroga, select/move/attack, warunki wygranej |
-| `render.js` | Warstwy renderowania: grid, highlights, units, floats, UI, overlay |
+| File | Description |
+|------|-------------|
+| `data.js` | Data registration: `FA.register('unitTypes', ...)`, `FA.register('terrain', ...)`, config, abilities, narrative |
+| `map.js` | Hex grid: math (hex↔pixel, distance, neighbors), map generation, pathfinding |
+| `battle.js` | Battle logic: turn system, combat, enemy AI, select/move/attack, win conditions |
+| `render.js` | Rendering layers: grid, highlights, units, floats, UI, overlay |
 | `main.js` | Entry point: keybindings, click handling, event wiring, game loop, `ForkArcade.onReady/submitScore` |
 
-Pliki kopiowane przez platformę (nie edytuj):
+Files copied by the platform (do not edit):
 - `fa-engine.js`, `fa-renderer.js`, `fa-input.js`, `fa-audio.js`, `fa-narrative.js` — engine
 - `forkarcade-sdk.js` — SDK
-- `sprites.js` — generowany z `_sprites.json`
+- `sprites.js` — generated from `_sprites.json`
 
 ## Engine API (window.FA)
 
@@ -52,26 +52,26 @@ Pliki kopiowane przez platformę (nie edytuj):
 
 - `GameMap.hexToPixel(col, row, size)` — hex coords → pixel
 - `GameMap.pixelToHex(px, py, size)` — pixel → hex coords
-- `GameMap.hexDistance(a, b)` — odległość między hexami
-- `GameMap.hexNeighbors(col, row)` — sąsiednie hexy
-- `GameMap.findReachable(grid, col, row, range)` — dostępne hexy w zasięgu ruchu
+- `GameMap.hexDistance(a, b)` — distance between hexes
+- `GameMap.hexNeighbors(col, row)` — adjacent hexes
+- `GameMap.findReachable(grid, col, row, range)` — reachable hexes within movement range
 
-## Eventy
+## Events
 
-| Event | Opis |
-|-------|------|
-| `input:action` | Klawisz zbindowany do akcji |
-| `input:click` | Kliknięcie na canvas |
-| `entity:damaged` | Jednostka otrzymała obrażenia |
-| `entity:killed` | Jednostka zginęła |
-| `game:over` | Koniec bitwy (victory/score) |
-| `state:changed` | Zmiana stanu |
-| `narrative:transition` | Przejście w grafie narracji |
+| Event | Description |
+|-------|-------------|
+| `input:action` | Key bound to action |
+| `input:click` | Click on canvas |
+| `entity:damaged` | Unit took damage |
+| `entity:killed` | Unit died |
+| `game:over` | Battle ended (victory/score) |
+| `state:changed` | State changed |
+| `narrative:transition` | Narrative graph transition |
 
 ## Scoring
 
-`ForkArcade.submitScore(score)` w obsłudze `game:over`. Score = bonus za wygraną minus kara za liczbę tur.
+`ForkArcade.submitScore(score)` in the `game:over` handler. Score = victory bonus minus penalty for number of turns.
 
 ## Sprite fallback
 
-`FA.draw.sprite(category, name, x, y, size, fallbackChar, fallbackColor)` — jeśli brak sprite'a, rysuje tekst.
+`FA.draw.sprite(category, name, x, y, size, fallbackChar, fallbackColor)` — if sprite is missing, draws text.
