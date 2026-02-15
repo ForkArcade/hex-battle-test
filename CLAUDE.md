@@ -74,4 +74,4 @@ Files copied by the platform (do not edit):
 
 ## Sprite fallback
 
-`FA.draw.sprite(category, name, x, y, size, fallbackChar, fallbackColor)` — if sprite is missing, draws text.
+`FA.draw.sprite(category, name, x, y, size, fallbackChar, fallbackColor, frame)` — renders sprite frame, or fallback text when no sprite exists. Frame index selects variant.

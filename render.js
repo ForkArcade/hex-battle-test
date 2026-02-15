@@ -136,12 +136,12 @@
         if (u.acted) {
           FA.draw.withAlpha(0.4, function() {
             FA.draw.circle(px, py, size * 0.55, teamColor);
-            FA.draw.sprite('units', u.type, px - spriteSize / 2, py - spriteSize / 2, spriteSize, ch, '#fff');
+            FA.draw.sprite('units', u.type, px - spriteSize / 2, py - spriteSize / 2, spriteSize, ch, '#fff', 0);
           });
         } else {
           FA.draw.circle(px, py, size * 0.55, teamColor);
           FA.draw.circle(px, py, size * 0.55, null, lightColor, 2);
-          FA.draw.sprite('units', u.type, px - spriteSize / 2, py - spriteSize / 2, spriteSize, ch, '#fff');
+          FA.draw.sprite('units', u.type, px - spriteSize / 2, py - spriteSize / 2, spriteSize, ch, '#fff', 0);
         }
 
         // HP bar
